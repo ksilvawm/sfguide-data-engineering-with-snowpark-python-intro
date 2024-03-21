@@ -28,3 +28,14 @@ def write_location_data():
     
     raw_data.write.mode("overwrite").saveAsTable("location")
 
+
+def write_order_details_data():
+    session = create_session()
+    session.use_schema("SNOWPARK_POC_DATA.PUBLIC")
+    
+    raw_data = pd.read_excel("data/order_detail.xlsx", sheet_name="order_detail")
+    raw_data = session.createDataFrame(raw_data)
+    
+    raw_data.write.mode("overwrite").saveAsTable("order_detail")
+    
+
