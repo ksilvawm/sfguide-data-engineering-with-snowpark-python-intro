@@ -9,15 +9,17 @@ Last Updated: 9/26/2023
 -- SNOWFLAKE ADVANTAGE: Snowpark DataFrame API
 
 
-USE ROLE HOL_ROLE;
-USE WAREHOUSE HOL_WH;
-USE SCHEMA HOL_DB.HOL_SCHEMA;
+USE ROLE DATA_DEV;
+USE WAREHOUSE MY_WH;
+USE SCHEMA SNOWPARK_POC_DATA.PUBLIC;
+
+
 
 
 -- ----------------------------------------------------------------------------
 -- Step 1: Create the stored procedure to load DAILY_CITY_METRICS
 -- ----------------------------------------------------------------------------
-
+-- 3.11.5
 CREATE OR REPLACE PROCEDURE LOAD_DAILY_CITY_METRICS_SP()
 RETURNS VARIANT
 LANGUAGE PYTHON
@@ -34,12 +36,14 @@ def table_exists(session, schema='', name=''):
     return exists
 
 def main(session: Session) -> str:
-    schema_name = "HOL_SCHEMA"
+    schema_name = "PUBLIC"
     table_name = "DAILY_CITY_METRICS"
 
     # Define the tables
     order_detail = session.table("ORDER_DETAIL")
-    history_day = session.table("FROSTBYTE_WEATHERSOURCE.ONPOINT_ID.HISTORY_DAY")
+    #history_day = session.table("FROSTBYTE_WEATHERSOURCE.ONPOINT_ID.HISTORY_DAY")
+    history_day = session.table("FROSTBYTE_WEATHER_POC_DATA.ONPOINT_ID.HISTORY_DAY")
+    
     location = session.table("LOCATION")
 
     # Join the tables
